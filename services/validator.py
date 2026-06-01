@@ -23,7 +23,7 @@ class Validator:
         for k, v in inputs.items():
             try:
                 float(v)
-            except:
+            except (TypeError, ValueError):
                 raise ValueError(f"{k} is not numeric: {v}")
 
 
