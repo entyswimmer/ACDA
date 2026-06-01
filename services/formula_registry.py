@@ -25,8 +25,7 @@ class FormulaRegistry:
                 "name": "Cox",
                 "function": cal_cox,
                 "inputs": [
-                    "tox",
-                    "eps_ox"
+                    "tox"
                 ],
                 "unit": "F/cm²"
             },
