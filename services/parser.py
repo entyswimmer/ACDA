@@ -22,10 +22,8 @@ class Parser:
     def _preprocess(self, expr: str) -> str:
         expr = expr.replace(" ", "")
 
-        expr = expr.replace("u", "*1e-6")
-        expr = expr.replace("n", "*1e-9")
-        expr = expr.replace("k", "*1e3")
-        expr = expr.replace("M", "*1e6")
+        prefix = {"p": "1e-12", "n": "1e-9", "u": "1e-6", "m": "1e-3", "k": "1e3", "M": "1e6"}
+        expr = re.sub(r"(\d+(?:\.\d+)?)([pnumkM])\b", lambda m: f"{m.group(1)}*{prefix[m.group(2)]}", expr)
 
         # 省略記号対策
         expr = expr.replace("^", "**")
