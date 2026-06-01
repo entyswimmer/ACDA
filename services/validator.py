@@ -9,7 +9,7 @@ class Validator:
     def validate_required(self, meta, inputs):
 
         for inp in meta["inputs"]:
-            name = inp["name"]
+            name = inp["name"] if isinstance(inp, dict) else inp
 
             if name not in inputs:
                 raise ValueError(f"Missing input: {name}")
