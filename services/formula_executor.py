@@ -4,10 +4,10 @@ class FormulaExecutor:
 
         func = meta["function"]
 
-        input_meta = meta["inputs"][0]
-
-        if input_meta["type"] == "variadic":
-            return func(*inputs["resistors"])
+        inputs_meta = meta.get("inputs", [])
+        if inputs_meta and isinstance(inputs_meta[0], dict) and inputs_meta[0].get("type") == "variadic":
+            variadic_name = inputs_meta[0].get("name")
+            return func(*inputs[variadic_name])
 
         return func(**inputs)
         
