@@ -53,8 +53,8 @@ class Validator:
     # -------------------------
     def validate_expression(self, expr: str):
 
-        forbidden = ["import", "__", "eval", "exec"]
+        forbidden_patterns = [r"\bimport\b", r"__", r"\beval\b", r"\bexec\b"]
 
-        for f in forbidden:
-            if f in expr:
+        for pat in forbidden_patterns:
+            if re.search(pat, expr):
                 raise ValueError("Unsafe expression detected")
