@@ -88,7 +88,7 @@ class FormulaRegistry:
                 "name": "ro",
                 "function": cal_ro,
                 "inputs": [
-                    "lambda_",
+                    "lammda_",
                     "id"
                 ],
                 "unit": "Ω"
