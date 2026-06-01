@@ -7,4 +7,4 @@ class VariableStore:
         self._vars[name] = value
 
     def get_all(self):
-        return self._vars
+        return dict(self._vars)
