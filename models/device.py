@@ -17,6 +17,8 @@ class MosParameters:
     mjsw: float
     cgdo: float
     js: float
+    cox: float
+    ucox: float
 
 
 @dataclass

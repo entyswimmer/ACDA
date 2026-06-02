@@ -18,7 +18,7 @@ nmos:
   ucox: 1.34e-4 #(A/V2)
 
 pmos:
-  vto: 0.8
+  vto: -0.8
   gamma: 0.4
   phi: 0.8
   nsub: 5e14

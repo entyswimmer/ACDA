@@ -89,7 +89,9 @@ class FormulaRegistry:
                         "name": "vgs"
                     },
                     {
-                        "name": "vth"
+                        "name": "vth",
+                        "source": "vto",
+                        "editable": True
                     }
                 ],
                 "unit": "V"
@@ -135,7 +137,9 @@ class FormulaRegistry:
                         "name": "vds"
                     },
                     {
-                        "name": "vth"
+                        "name": "vth",
+                        "source": "vto",
+                        "editable": True
                     }
                 ],
                 "unit": "A"

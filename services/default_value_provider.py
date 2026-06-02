@@ -42,7 +42,7 @@ class DefaultValueProvider:
 
             if source:
 
-                defaults[name] = (
+                value = (
                     self.resolver.get_value(
                         device,
                         device_type,
@@ -50,6 +50,10 @@ class DefaultValueProvider:
                     )
                 )
 
+                if (device_type == "pmos" and source == "vto"):
+                    value = abs(value)
+                
+                defaults[item["name"]] = value
             else:
 
                 defaults[name] = None
