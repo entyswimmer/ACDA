@@ -8,9 +8,13 @@ def cal_cox(tox: float) -> float:
     eps_ox = 3.9 * 8.854e-16
     return eps_ox / tox
 
+# uCox
+def cal_uCox(u: float, cox: float) -> float:
+    return u*cox
+
 # ベータ
-def cal_beta(mu: float, cox: float, w: float, l: float) -> float:
-    return mu * cox * (w / l)
+def cal_beta(ucox: float, w: float, l: float) -> float:
+    return ucox * (w / l)
 
 # 飽和電圧
 def cal_delta_ov(vgs: float, vth: float) -> float:
@@ -21,7 +25,8 @@ def cal_vov(id: float, beta: float) -> float:
     return np.sqrt(2 * id / beta)
 
 # ドレイン電流
-def cal_id(beta: float, vgs: float, vds: float, vth: float) -> float:
+def cal_id(w: float, l: float, ucox: float, vgs: float, vds: float, vth: float) -> float:
+    beta = w * ucox / l
     if vgs > vth and vgs - vth <= vds:
         return beta * (vgs - vth)**2 / 2
     elif vgs > vth and (vgs - vth) > vds:
@@ -46,6 +51,6 @@ def cal_vgs(vth: float, vov: float) -> float:
     return vth + vov
 
 # アスペクト比
-def cal_aspect(id: float, mu: float, cox: float, vov: float) -> float:
-    return 2 * id / (mu * cox * vov**2)
+def cal_aspect(id: float, ucox: float, vov: float) -> float:
+    return 2 * id / (ucox * vov**2)
 
