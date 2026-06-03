@@ -68,7 +68,7 @@ class FormulaTree(QTreeWidget):
 
             item.setData(
                 0,
-                1,
+                Qt.ItemDataRole.UserRole,
                 key
             )
 
