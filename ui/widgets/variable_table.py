@@ -56,6 +56,8 @@ class VariableTable(QWidget):
         row = self.table.rowCount()
 
         self.table.insertRow(row)
+        self.table.setItem(row, 0, QTableWidgetItem(""))
+        self.table.setItem(row, 1, QTableWidgetItem(""))
 
     def clear(self):
 
