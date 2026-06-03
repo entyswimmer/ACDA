@@ -1,0 +1,18 @@
+class Colors:
+
+    PRIMARY = "#3B82F6"
+    PRIMARY_HOVER = "#2563EB"
+
+    BACKGROUND = "#F8FAFC"
+    SURFACE = "#FFFFFF"
+
+    BORDER = "#E2E8F0"
+
+    TEXT = "#0F172A"
+    TEXT_SECONDARY = "#64748B"
+
+    SUCCESS = "#22C55E"
+    WARNING = "#F59E0B"
+    ERROR = "#EF4444"
+
+    RADIUS = "10px"
