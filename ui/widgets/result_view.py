@@ -4,11 +4,15 @@ from PySide6.QtWidgets import (
     QTextEdit
 )
 
+from services.unit_converter import UnitConverter
+
 
 class ResultView(QWidget):
 
     def __init__(self):
         super().__init__()
+
+        self._formatter = UnitConverter()
 
         self._text = QTextEdit()
 
@@ -28,13 +32,17 @@ class ResultView(QWidget):
         unit: str = ""
     ):
 
+        formatted = self._formatter.format_value(
+            value
+        )
+
         if unit:
 
-            text = f"{value} {unit}"
+            text = f"{formatted} {unit}"
 
         else:
 
-            text = str(value)
+            text = formatted
 
         self._text.setPlainText(
             text
@@ -47,18 +55,22 @@ class ResultView(QWidget):
         unit: str = ""
     ):
 
+        formatted = self._formatter.format_value(
+            value
+        )
+
         if unit:
 
             text = (
                 f"{formula_name} = "
-                f"{value} {unit}"
+                f"{formatted} {unit}"
             )
 
         else:
 
             text = (
                 f"{formula_name} = "
-                f"{value}"
+                f"{formatted}"
             )
 
         self._text.setPlainText(

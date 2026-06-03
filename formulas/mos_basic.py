@@ -39,8 +39,8 @@ def cal_gm(id: float, vov: float) -> float:
     return 2 * id / vov
 
 # 出力抵抗
-def cal_ro(lammda_: float, id: float) -> float:
-    return 1 / (lammda_*id)
+def cal_ro(lamda_: float, id: float) -> float:
+    return 1 / (lamda_*id)
 
 # 基盤バイアス効果
 def cal_vth(vtho: float, gamma: float, phi: float, vsb: float) -> float:

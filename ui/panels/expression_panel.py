@@ -48,9 +48,13 @@ class ExpressionPanel(QWidget):
         self.expression_edit.setPlaceholderText(
             "2k + 3k\nsqrt(4)\n10u * 100k"
         )
+        self.expression_edit.setMinimumHeight(
+            160
+        )
 
         group_layout.addWidget(
-            self.expression_edit
+            self.expression_edit,
+            stretch=1,
         )
 
         # ------------------

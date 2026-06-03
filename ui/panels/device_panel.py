@@ -3,6 +3,7 @@ from PySide6.QtCore import Signal
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
+    QHBoxLayout,
     QGroupBox,
     QLabel,
     QRadioButton,
@@ -10,7 +11,9 @@ from PySide6.QtWidgets import (
     QComboBox,
     QTableWidget,
     QTableWidgetItem,
-    QHeaderView
+    QHeaderView,
+    QAbstractItemView,
+    QSizePolicy,
 )
 
 
@@ -18,16 +21,34 @@ class DevicePanel(QWidget):
 
     device_changed = Signal(str)
 
-    def __init__(self):
+    def __init__(
+        self,
+        device,
+        device_resolver
+    ):
         super().__init__()
 
+        self.device = device
+        self.device_resolver = device_resolver
+
         self._build_ui()
+
+        self.set_models(
+            ["razavi_level1"]
+        )
+
+        self._refresh_parameters()
 
     def _build_ui(self):
 
         layout = QVBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)
 
         group = QGroupBox("Device")
+        group.setSizePolicy(
+            QSizePolicy.Policy.Preferred,
+            QSizePolicy.Policy.Expanding,
+        )
         layout.addWidget(group)
 
         group_layout = QVBoxLayout(group)
@@ -39,6 +60,8 @@ class DevicePanel(QWidget):
         group_layout.addWidget(
             QLabel("Device Type")
         )
+
+        device_type_row = QHBoxLayout()
 
         self.nmos_radio = QRadioButton(
             "NMOS"
@@ -64,12 +87,18 @@ class DevicePanel(QWidget):
             self.pmos_radio
         )
 
-        group_layout.addWidget(
+        device_type_row.addWidget(
             self.nmos_radio
         )
 
-        group_layout.addWidget(
+        device_type_row.addWidget(
             self.pmos_radio
+        )
+
+        device_type_row.addStretch()
+
+        group_layout.addLayout(
+            device_type_row
         )
 
         self.nmos_radio.toggled.connect(
@@ -89,6 +118,7 @@ class DevicePanel(QWidget):
         )
 
         self.model_combo = QComboBox()
+        self.model_combo.setMinimumHeight(36)
 
         group_layout.addWidget(
             self.model_combo
@@ -106,6 +136,22 @@ class DevicePanel(QWidget):
             QTableWidget(0, 2)
         )
 
+        self.param_table.setMinimumHeight(
+            280
+        )
+        self.param_table.setEditTriggers(
+            QAbstractItemView.EditTrigger.NoEditTriggers
+        )
+        self.param_table.setSelectionBehavior(
+            QAbstractItemView.SelectionBehavior.SelectRows
+        )
+        self.param_table.setVerticalScrollMode(
+            QAbstractItemView.ScrollMode.ScrollPerPixel
+        )
+        self.param_table.verticalHeader().setVisible(
+            False
+        )
+
         self.param_table.setHorizontalHeaderLabels(
             ["Parameter", "Value"]
         )
@@ -115,13 +161,27 @@ class DevicePanel(QWidget):
         )
 
         group_layout.addWidget(
-            self.param_table
+            self.param_table,
+            stretch=1,
         )
 
     def _emit_device_changed(self):
 
+        self._refresh_parameters()
+
         self.device_changed.emit(
             self.selected_device()
+        )
+
+    def _refresh_parameters(self):
+
+        params = self.device_resolver.get_all(
+            self.device,
+            self.selected_device()
+        )
+
+        self.update_parameters(
+            params
         )
 
     def selected_device(self) -> str:

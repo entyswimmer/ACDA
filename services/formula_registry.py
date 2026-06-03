@@ -168,8 +168,8 @@ class FormulaRegistry:
                 "function": cal_ro,
                 "inputs": [
                     {
-                        "name": "lammda_",
-                        "source": "lambda",
+                        "name": "lamda_",
+                        "source": "lambda_",
                         "editable": True
                     },
                     {
@@ -285,3 +285,9 @@ class FormulaRegistry:
             result[category].append(key)
 
         return result
+    
+    def get_name(self, key):
+        return self._formulas[key]["name"]
+    
+    def get_category(self, key):
+        return self._formulas[key]["category"]

@@ -26,6 +26,8 @@ class ModelLoader:
             mjsw=data["nmos"]["mjsw"],
             cgdo=data["nmos"]["cgdo"],
             js=data["nmos"]["js"],
+            cox=data["nmos"]["cox"],
+            ucox=data["nmos"]["ucox"]
         )
 
         pmos = MosParameters(
@@ -44,6 +46,8 @@ class ModelLoader:
             mjsw=data["pmos"]["mjsw"],
             cgdo=data["pmos"]["cgdo"],
             js=data["pmos"]["js"],
+            cox=data["pmos"]["cox"],
+            ucox=data["pmos"]["ucox"]
         )
 
         return DeviceModel(

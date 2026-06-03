@@ -3,58 +3,238 @@ import re
 
 class Validator:
 
-    # -------------------------
-    # 入力チェック
-    # -------------------------
-    def validate_required(self, meta, inputs):
+    def validate(
+        self,
+        formula_key: str,
+        meta: dict,
+        inputs: dict
+    ):
 
-        for inp in meta["inputs"]:
-            name = inp["name"] if isinstance(inp, dict) else inp
+        self.validate_required(
+            meta,
+            inputs
+        )
+
+        self.validate_numeric(
+            inputs
+        )
+
+        self.validate_physics(
+            formula_key,
+            inputs
+        )
+
+    # -------------------------
+    # 必須入力チェック
+    # -------------------------
+
+    def validate_required(
+        self,
+        meta,
+        inputs
+    ):
+
+        for item in meta["inputs"]:
+
+            name = item["name"]
 
             if name not in inputs:
-                raise ValueError(f"Missing input: {name}")
 
+                raise ValueError(
+                    f"Missing input: {name}"
+                )
 
     # -------------------------
     # 数値チェック
     # -------------------------
-    def validate_numeric(self, inputs):
 
-        for k, v in inputs.items():
-            try:
-                float(v)
-            except (TypeError, ValueError):
-                raise ValueError(f"{k} is not numeric: {v}")
+    def validate_numeric(
+        self,
+        inputs
+    ):
 
+        for key, value in inputs.items():
+
+            if isinstance(
+                value,
+                list
+            ):
+
+                for item in value:
+
+                    try:
+                        float(item)
+
+                    except (
+                        TypeError,
+                        ValueError
+                    ):
+
+                        raise ValueError(
+                            f"{key} contains non numeric value: {item}"
+                        )
+
+            else:
+
+                try:
+                    float(value)
+
+                except (
+                    TypeError,
+                    ValueError
+                ):
+
+                    raise ValueError(
+                        f"{key} is not numeric: {value}"
+                    )
 
     # -------------------------
     # 物理チェック
     # -------------------------
-    def validate_physics(self, formula_key: str, inputs: dict):
+
+    def validate_physics(
+        self,
+        formula_key: str,
+        inputs: dict
+    ):
 
         def must_positive(keys):
-            for k in keys:
-                if float(inputs[k]) <= 0:
-                    raise ValueError(f"{k} must be > 0")
 
-        if formula_key in ["id", "beta", "gm", "ro"]:
-            must_positive(inputs.keys())
+            for key in keys:
 
-        if "vov" in inputs and float(inputs["vov"]) <= 0:
-            raise ValueError("Vov must be > 0")
+                if key not in inputs:
+                    continue
 
-        if "vgs" in inputs and "vth" in inputs:
-            if float(inputs["vgs"]) < float(inputs["vth"]):
-                raise ValueError("Vgs must be >= Vth")
+                if float(inputs[key]) <= 0:
 
+                    raise ValueError(
+                        f"{key} must be > 0"
+                    )
+
+        # β = μCox(W/L)
+        if formula_key == "beta":
+
+            must_positive(
+                [
+                    "ucox",
+                    "w",
+                    "l"
+                ]
+            )
+
+        # Id計算
+        elif formula_key == "id":
+
+            must_positive(
+                [
+                    "w",
+                    "l",
+                    "ucox"
+                ]
+            )
+
+            if (
+                "vgs" in inputs
+                and
+                "vth" in inputs
+            ):
+
+                if (
+                    float(inputs["vgs"])
+                    <
+                    float(inputs["vth"])
+                ):
+
+                    raise ValueError(
+                        "Vgs must be >= Vth"
+                    )
+
+        # gm = 2Id/Vov
+        elif formula_key == "gm":
+
+            must_positive(
+                [
+                    "id",
+                    "vov"
+                ]
+            )
+
+        # ro = 1/(lambda*Id)
+        elif formula_key == "ro":
+
+            must_positive(
+                [
+                    "lammda_",
+                    "id"
+                ]
+            )
+
+        # Vov
+        elif formula_key == "vov":
+
+            must_positive(
+                [
+                    "id",
+                    "beta"
+                ]
+            )
+
+        # Aspect
+        elif formula_key == "aspect":
+
+            must_positive(
+                [
+                    "id",
+                    "ucox",
+                    "vov"
+                ]
+            )
+
+        # Parallel
+        elif formula_key == "parallel":
+
+            resistors = inputs.get(
+                "resistors",
+                []
+            )
+
+            if len(resistors) < 2:
+
+                raise ValueError(
+                    "At least two resistors are required"
+                )
+
+            for r in resistors:
+
+                if float(r) <= 0:
+
+                    raise ValueError(
+                        "Resistance must be > 0"
+                    )
 
     # -------------------------
     # Expression安全チェック
     # -------------------------
-    def validate_expression(self, expr: str):
 
-        forbidden_patterns = [r"\bimport\b", r"__", r"\beval\b", r"\bexec\b"]
+    def validate_expression(
+        self,
+        expr: str
+    ):
 
-        for pat in forbidden_patterns:
-            if re.search(pat, expr):
-                raise ValueError("Unsafe expression detected")
+        forbidden_patterns = [
+            r"\bimport\b",
+            r"__",
+            r"\beval\b",
+            r"\bexec\b"
+        ]
+
+        for pattern in forbidden_patterns:
+
+            if re.search(
+                pattern,
+                expr
+            ):
+
+                raise ValueError(
+                    "Unsafe expression detected"
+                )

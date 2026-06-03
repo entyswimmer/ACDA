@@ -1,7 +1,8 @@
-from PySide6.QtCore import Signal
+from PySide6.QtCore import Signal, Qt
 from PySide6.QtWidgets import (
     QTreeWidget,
-    QTreeWidgetItem
+    QTreeWidgetItem,
+    QAbstractItemView,
 )
 
 
@@ -18,6 +19,12 @@ class FormulaTree(QTreeWidget):
         self.registry = registry
 
         self.setHeaderHidden(True)
+        self.setMinimumHeight(240)
+        self.setVerticalScrollMode(
+            QAbstractItemView.ScrollMode.ScrollPerPixel
+        )
+        self.setAnimated(True)
+        self.setIndentation(16)
 
         self._build_tree()
 
@@ -40,10 +47,15 @@ class FormulaTree(QTreeWidget):
 
             if category not in categories:
 
+                category_item = QTreeWidgetItem(
+                    [category]
+                )
+                category_item.setFlags(
+                    Qt.ItemFlag.ItemIsEnabled
+                )
+
                 categories[category] = (
-                    QTreeWidgetItem(
-                        [category]
-                    )
+                    category_item
                 )
 
                 self.addTopLevelItem(

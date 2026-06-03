@@ -1,10 +1,12 @@
-from PySide6.QtCore import Signal
+from PySide6.QtCore import Signal, Qt
 
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
     QPushButton,
-    QGroupBox
+    QGroupBox,
+    QScrollArea,
+    QSizePolicy,
 )
 
 from ui.widgets.formula_tree import (
@@ -40,9 +42,14 @@ class FormulaPanel(QWidget):
     def _build_ui(self):
 
         layout = QVBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)
 
         group = QGroupBox(
             "Formula"
+        )
+        group.setSizePolicy(
+            QSizePolicy.Policy.Preferred,
+            QSizePolicy.Policy.Expanding,
         )
 
         layout.addWidget(group)
@@ -61,8 +68,26 @@ class FormulaPanel(QWidget):
             )
         )
 
-        group_layout.addWidget(
+        formula_tree = QScrollArea()
+        formula_tree.setWidget(
             self.formula_tree
+        )
+        formula_tree.setWidgetResizable(
+            True
+        )
+        formula_tree.setFrameShape(
+            QScrollArea.Shape.NoFrame
+        )
+        formula_tree.setHorizontalScrollBarPolicy(
+            Qt.ScrollBarPolicy.ScrollBarAlwaysOff
+        )
+        formula_tree.setMinimumHeight(
+            540
+        )
+        
+        group_layout.addWidget(
+            self.formula_tree,
+            stretch=2,
         )
 
         # --------------------
@@ -73,8 +98,26 @@ class FormulaPanel(QWidget):
             InputForm()
         )
 
-        group_layout.addWidget(
+        input_scroll = QScrollArea()
+        input_scroll.setWidget(
             self.input_form
+        )
+        input_scroll.setWidgetResizable(
+            True
+        )
+        input_scroll.setFrameShape(
+            QScrollArea.Shape.NoFrame
+        )
+        input_scroll.setHorizontalScrollBarPolicy(
+            Qt.ScrollBarPolicy.ScrollBarAlwaysOff
+        )
+        input_scroll.setMinimumHeight(
+            340
+        )
+
+        group_layout.addWidget(
+            input_scroll,
+            stretch=1,
         )
 
         # --------------------

@@ -1,9 +1,13 @@
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QMainWindow,
     QWidget,
     QVBoxLayout,
-    QTabWidget
+    QTabWidget,
+    QSplitter,
 )
+
+from ui.widgets.scroll_area import make_scroll_area
 
 from services.model_loader import ModelLoader
 from services.formula_registry import FormulaRegistry
@@ -13,10 +17,10 @@ from services.device_resolver import DeviceResolver
 from services.validator import Validator
 from services.parser import Parser
 
-from panels.device_panel import DevicePanel
-from panels.formula_panel import FormulaPanel
-from panels.result_panel import ResultPanel
-from panels.expression_panel import ExpressionPanel
+from ui.panels.device_panel import DevicePanel
+from ui.panels.formula_panel import FormulaPanel
+from ui.panels.result_panel import ResultPanel
+from ui.panels.expression_panel import ExpressionPanel
 
 
 class MainWindow(QMainWindow):
@@ -89,6 +93,9 @@ class MainWindow(QMainWindow):
         )
 
         self.tabs = QTabWidget()
+        self.tabs.setUsesScrollButtons(
+            False
+        )
 
         root.addWidget(
             self.tabs
@@ -100,15 +107,32 @@ class MainWindow(QMainWindow):
 
         formula_tab = QWidget()
 
-        formula_layout = QVBoxLayout()
+        formula_layout = QVBoxLayout(
+            formula_tab
+        )
+        formula_layout.setContentsMargins(
+            8,
+            8,
+            8,
+            8
+        )
 
-        formula_tab.setLayout(
-            formula_layout
+        splitter = QSplitter(
+            Qt.Orientation.Horizontal
         )
 
         self.device_panel = DevicePanel(
             self.device,
             self.device_resolver
+        )
+
+        device_scroll = make_scroll_area(
+            self.device_panel,
+            min_width=320,
+        )
+
+        right_splitter = QSplitter(
+            Qt.Orientation.Vertical
         )
 
         self.formula_panel = FormulaPanel(
@@ -117,16 +141,53 @@ class MainWindow(QMainWindow):
 
         self.result_panel = ResultPanel()
 
-        formula_layout.addWidget(
-            self.device_panel
-        )
-
-        formula_layout.addWidget(
+        right_splitter.addWidget(
             self.formula_panel
         )
 
-        formula_layout.addWidget(
+        right_splitter.addWidget(
             self.result_panel
+        )
+
+        right_splitter.setStretchFactor(
+            0,
+            3
+        )
+
+        right_splitter.setStretchFactor(
+            1,
+            1
+        )
+
+        right_splitter.setSizes(
+            [600, 200]
+        )
+
+        right_scroll = make_scroll_area(
+            right_splitter,
+            min_width=480,
+        )
+
+        splitter.addWidget(
+            device_scroll
+        )
+        splitter.addWidget(
+            right_scroll
+        )
+        splitter.setStretchFactor(
+            0,
+            0,
+        )
+        splitter.setStretchFactor(
+            1,
+            1,
+        )
+        splitter.setSizes(
+            [360, 820]
+        )
+
+        formula_layout.addWidget(
+            splitter
         )
 
         self.tabs.addTab(
@@ -140,10 +201,14 @@ class MainWindow(QMainWindow):
 
         expression_tab = QWidget()
 
-        expression_layout = QVBoxLayout()
-
-        expression_tab.setLayout(
-            expression_layout
+        expression_layout = QVBoxLayout(
+            expression_tab
+        )
+        expression_layout.setContentsMargins(
+            8,
+            8,
+            8,
+            8
         )
 
         self.expression_panel = (
@@ -154,12 +219,37 @@ class MainWindow(QMainWindow):
             ResultPanel()
         )
 
-        expression_layout.addWidget(
-            self.expression_panel
+        expression_content = QWidget()
+
+        expression_content_layout = (
+            QVBoxLayout(
+                expression_content
+            )
+        )
+        expression_content_layout.setContentsMargins(
+            0,
+            0,
+            0,
+            0
+        )
+
+        expression_content_layout.addWidget(
+            self.expression_panel,
+            stretch=2,
+        )
+
+        expression_content_layout.addWidget(
+            self.expression_result_panel,
+            stretch=1,
+        )
+
+        expression_scroll = make_scroll_area(
+            expression_content,
+            min_width=560,
         )
 
         expression_layout.addWidget(
-            self.expression_result_panel
+            expression_scroll
         )
 
         self.tabs.addTab(
