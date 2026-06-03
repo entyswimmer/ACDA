@@ -167,7 +167,6 @@ class Validator:
                     "id"
                 ]
             )
-            )
 
         # Vov
         elif formula_key == "vov":
