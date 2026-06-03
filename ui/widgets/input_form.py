@@ -86,12 +86,9 @@ class InputForm(QWidget):
             if meta.get("type") == "variadic":
 
                 result[name] = [
-
-                    self.parser.parse(
-                        value.strip()
-                    )
-
+                    self.parser.parse(value.strip())
                     for value in text.split(",")
+                    if value.strip()
                 ]
 
             # ------------------
