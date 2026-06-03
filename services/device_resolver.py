@@ -1,3 +1,6 @@
+from dataclasses import asdict
+
+
 class DeviceResolver:
 
     def get_value(
@@ -26,3 +29,8 @@ class DeviceResolver:
             target,
             parameter
         )
+    
+    def get_all(self, device, device_type):
+        target = getattr(device, device_type)
+
+        return asdict(target)
