@@ -82,12 +82,12 @@ class FormulaPanel(QWidget):
             Qt.ScrollBarPolicy.ScrollBarAlwaysOff
         )
         formula_tree.setMinimumHeight(
-            540
+            250
         )
         
         group_layout.addWidget(
             formula_tree,
-            stretch=2,
+            stretch=1,
         )
 
         # --------------------
@@ -112,12 +112,12 @@ class FormulaPanel(QWidget):
             Qt.ScrollBarPolicy.ScrollBarAlwaysOff
         )
         input_scroll.setMinimumHeight(
-            340
+            250
         )
 
         group_layout.addWidget(
             input_scroll,
-            stretch=1,
+            stretch=4,
         )
 
         # --------------------

@@ -19,7 +19,7 @@ class FormulaTree(QTreeWidget):
         self.registry = registry
 
         self.setHeaderHidden(True)
-        self.setMinimumHeight(240)
+        self.setMinimumHeight(250)
         self.setVerticalScrollMode(
             QAbstractItemView.ScrollMode.ScrollPerPixel
         )

@@ -13,7 +13,7 @@ class ResultPanel(QWidget):
 
     def __init__(self):
         super().__init__()
-
+        self.setMinimumHeight(150) #変更
         self._build_ui()
 
     def _build_ui(self):

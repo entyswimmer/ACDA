@@ -135,6 +135,10 @@ class MainWindow(QMainWindow):
             Qt.Orientation.Vertical
         )
 
+        right_splitter.setChildrenCollapsible(
+            False
+        )
+
         self.formula_panel = FormulaPanel(
             self.registry
         )
