@@ -86,7 +86,7 @@ class FormulaPanel(QWidget):
         )
         
         group_layout.addWidget(
-            self.formula_tree,
+            formula_tree,
             stretch=2,
         )
 
