@@ -4,48 +4,27 @@ from PySide6.QtWidgets import (
     QTextEdit
 )
 
-from services.unit_converter import UnitConverter
-
-
 class ResultView(QWidget):
 
     def __init__(self):
         super().__init__()
 
-        self._formatter = UnitConverter()
-
         self._text = QTextEdit()
-
         self._text.setReadOnly(True)
 
         layout = QVBoxLayout()
-
-        layout.addWidget(
-            self._text
-        )
-
+        layout.addWidget(self._text)
         self.setLayout(layout)
 
-    def show_result(
-        self,
-        value,
-        unit: str = ""
-    ):
+    def _format(self, value):
+        return f"{value:.3e}"
 
-        formatted = self._formatter.format_value(
-            value
-        )
+    def show_result(self, value, unit: str = ""):
 
-        if unit:
-
-            text = f"{formatted} {unit}"
-
-        else:
-
-            text = formatted
+        formatted = self._format(value)
 
         self._text.setPlainText(
-            text
+            f"{formatted} {unit}".strip()
         )
 
     def show_formula_result(
@@ -55,37 +34,17 @@ class ResultView(QWidget):
         unit: str = ""
     ):
 
-        formatted = self._formatter.format_value(
-            value
-        )
+        formatted = self._format(value)
 
         if unit:
-
-            text = (
-                f"{formula_name} = "
-                f"{formatted} {unit}"
-            )
-
+            text = f"{formula_name} = {formatted} {unit}"
         else:
+            text = f"{formula_name} = {formatted}"
 
-            text = (
-                f"{formula_name} = "
-                f"{formatted}"
-            )
+        self._text.setPlainText(text)
 
-        self._text.setPlainText(
-            text
-        )
-
-    def show_error(
-        self,
-        message: str
-    ):
-
-        self._text.setPlainText(
-            f"Error: {message}"
-        )
+    def show_error(self, message: str):
+        self._text.setPlainText(f"Error: {message}")
 
     def clear(self):
-
         self._text.clear()
