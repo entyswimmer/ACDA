@@ -22,6 +22,7 @@ from ui.panels.formula_panel import FormulaPanel
 from ui.panels.result_panel import ResultPanel
 from ui.panels.expression_panel import ExpressionPanel
 
+from utils.paths import DATA_DIR
 
 class MainWindow(QMainWindow):
 
@@ -66,7 +67,7 @@ class MainWindow(QMainWindow):
 
         self.device = (
             self.model_loader.load(
-                "data/razavi_level1.yaml"
+                DATA_DIR/"razavi_level1.yaml"
             )
         )
 
