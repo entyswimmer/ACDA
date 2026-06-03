@@ -159,14 +159,14 @@ class Validator:
                 ]
             )
 
-        # ro = 1/(lambda*Id)
         elif formula_key == "ro":
 
             must_positive(
                 [
-                    "lammda_",
+                    "lamda_",
                     "id"
                 ]
+            )
             )
 
         # Vov
