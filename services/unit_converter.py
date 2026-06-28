@@ -1,3 +1,4 @@
+import numpy as np
 class UnitConverter:
 
     PREFIX = {
@@ -71,3 +72,21 @@ class UnitConverter:
         symbol, scale = self.PREFIX_ORDER[0]
 
         return symbol, abs_val / scale
+    
+    def get_scale(self, prefix: str) -> float:
+        if prefix == "":
+            return 1.0
+
+        return self.PREFIX[prefix]
+
+    def convert_plot(
+        self, 
+        data: np.ndarray, 
+        from_prefix: str="", 
+        to_prefix: str="",
+        ) -> np.ndarray:
+
+            from_scale = self.get_scale(from_prefix)
+            to_scale = self.get_scale(to_prefix)
+
+            return data * from_scale / to_scale
