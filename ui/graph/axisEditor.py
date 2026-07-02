@@ -109,7 +109,10 @@ class AxisEditor(QWidget):
         if not text:
             return None
 
-        return float(text)
+        try:
+            return float(text)
+        except ValueError:
+            return None
 
     def xmin(self):
         return self._parse_float(self.xmin_edit.text())
