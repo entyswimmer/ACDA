@@ -131,10 +131,6 @@ class ProjectController:
         elif columns:
             self.set_x_column(columns[0])
 
-        if saved_meta:
-            self.set_series_meta(saved_meta)
-            self.apply_series_meta()
-
         subplot = self.get_subplot()
 
         if subplot and saved_subplot:
@@ -144,6 +140,10 @@ class ProjectController:
         if subplot and saved_axis:
             for key, value in saved_axis.items():
                 setattr(subplot, key, value)
+
+        if saved_meta:
+            self.set_series_meta(saved_meta)
+            self.apply_series_meta()
 
     def set_x_column(self, column: str):
         self._x_column = column
