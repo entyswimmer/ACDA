@@ -105,9 +105,6 @@ class GraphController:
     def refresh(self):
         if not self.project.is_loaded:
             self.graph_view.clear()
-            self.graph_view.set_canvas(
-                self.make_graph.get_canvas()
-            )
             return
 
         setting = self.project.get_setting()
