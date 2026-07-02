@@ -170,7 +170,6 @@ class GraphController:
         self.tool_box.series_editor.add_empty_series(
             default_column
         )
-        self._on_series_changed()
 
     def _on_remove_series(self, row: int):
         self.tool_box.series_editor.remove_row(row)
