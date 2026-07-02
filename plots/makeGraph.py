@@ -128,17 +128,17 @@ class MakeGraph:
 
         # title_setting
         if subplot.title:
-            ax.set_title(subplot.title)
+            ax.set_title(subplot.title, fontsize=16)
 
         xlabel = subplot.x_label
 
         if xlabel:
-            ax.set_xlabel(xlabel)
+            ax.set_xlabel(xlabel, fontsize=14)
 
         ylabel = subplot.y_label
         
         if ylabel:
-            ax.set_ylabel(ylabel)
+            ax.set_ylabel(ylabel, fontsize=14)
 
         # Scale
         ax.set_xscale(subplot.x_scale)
