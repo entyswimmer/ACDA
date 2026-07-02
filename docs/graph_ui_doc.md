@@ -11,24 +11,22 @@ ACDA
 ├── main.py
 │
 ├── ui/
-│   ├── mainWindow.py
-│   ├── menuBar.py
-│   ├── toolBar.py
-│   ├── statusBar.py
+│   ├── __init__.py
+│   ├── app.py
+│   ├── main_window.py
 │   │
 │   ├── graph/
 │   │   ├── graphView.py
 │   │   ├── graphToolBox.py
+│   │   ├── columnSelector.py
 │   │   ├── subplotEditor.py
 │   │   ├── seriesEditor.py
 │   │   └── axisEditor.py
 │   │
-│   ├── file/
-│   │   ├── openDialog.py
-│   │   └── exportDialog.py
+│   ├── styles/
+│   │   └── main.qss
 │   │
 │   └── widgets/
-│       ├── columnSelector.py
 │       ├── unitSelector.py
 │       ├── colorSelector.py
 │       ├── lineStyleSelector.py
