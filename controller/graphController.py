@@ -14,9 +14,6 @@ class GraphController:
         self.tool_box = tool_box
 
         self.make_graph = MakeGraph()
-        self.graph_view.set_canvas(
-            self.make_graph.get_canvas()
-        )
 
         self._connect_signals()
 
