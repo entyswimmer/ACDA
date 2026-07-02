@@ -173,7 +173,6 @@ class GraphController:
 
     def _on_remove_series(self, row: int):
         self.tool_box.series_editor.remove_row(row)
-        self._on_series_changed()
 
     def _on_subplot_changed(self):
         self._apply_ui_to_project()
