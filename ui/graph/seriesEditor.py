@@ -73,7 +73,7 @@ class SeriesEditor(QWidget):
 
         self.add_button = QPushButton("Add Series")
         self.add_button.clicked.connect(
-            self.add_requested.emit
+            lambda _checked=False: self.add_requested.emit()
         )
 
         self.remove_button = QPushButton("Remove")
