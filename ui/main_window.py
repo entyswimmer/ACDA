@@ -22,6 +22,13 @@ from ui.panels.formula_panel import FormulaPanel
 from ui.panels.result_panel import ResultPanel
 from ui.panels.expression_panel import ExpressionPanel
 
+from ui.graph.graphView import GraphView
+from ui.graph.graphToolBox import GraphToolBox
+
+from controller.projectController import ProjectController
+from controller.graphController import GraphController
+from controller.fileController import FileController
+
 from utils.paths import DATA_DIR
 
 class MainWindow(QMainWindow):
@@ -260,6 +267,76 @@ class MainWindow(QMainWindow):
         self.tabs.addTab(
             expression_tab,
             "Expression"
+        )
+
+        # =====================================
+        # Graph
+        # =====================================
+
+        graph_tab = QWidget()
+
+        graph_layout = QVBoxLayout(
+            graph_tab
+        )
+        graph_layout.setContentsMargins(
+            8,
+            8,
+            8,
+            8,
+        )
+
+        graph_splitter = QSplitter(
+            Qt.Orientation.Horizontal
+        )
+
+        self.graph_project = ProjectController()
+
+        self.graph_tool_box = GraphToolBox()
+        self.graph_view = GraphView()
+
+        self.graph_controller = GraphController(
+            self.graph_project,
+            self.graph_view,
+            self.graph_tool_box,
+        )
+
+        self.file_controller = FileController(
+            self.graph_project,
+            self.graph_controller,
+            self.graph_tool_box,
+            parent=self,
+        )
+
+        tool_box_scroll = make_scroll_area(
+            self.graph_tool_box,
+            min_width=360,
+        )
+
+        graph_splitter.addWidget(
+            tool_box_scroll
+        )
+        graph_splitter.addWidget(
+            self.graph_view
+        )
+        graph_splitter.setStretchFactor(
+            0,
+            0,
+        )
+        graph_splitter.setStretchFactor(
+            1,
+            1,
+        )
+        graph_splitter.setSizes(
+            [380, 820]
+        )
+
+        graph_layout.addWidget(
+            graph_splitter
+        )
+
+        self.tabs.addTab(
+            graph_tab,
+            "Graph"
         )
 
     def _connect_signals(self):
