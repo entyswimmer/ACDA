@@ -127,7 +127,6 @@ class GraphController:
 
         series_meta = toolbox.series_editor.series_data()
         self.project.set_series_meta(series_meta)
-        self.project.apply_series_meta()
 
         subplot = toolbox.subplot_editor
         self.project.apply_subplot_settings(
@@ -138,6 +137,8 @@ class GraphController:
             y_unit=subplot.y_unit_prefix(),
             legend=subplot.legend(),
         )
+
+        self.project.apply_series_meta()
 
         axis = toolbox.axis_editor
         self.project.apply_axis_settings(
